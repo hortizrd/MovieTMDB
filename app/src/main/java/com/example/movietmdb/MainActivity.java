@@ -2,6 +2,7 @@ package com.example.movietmdb;
 
 import android.os.Bundle;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -9,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movietmdb.adapter.MovieAdaptador;
 import com.example.movietmdb.api.Interface;
+import com.example.movietmdb.model.ModelMovies;
 import com.example.movietmdb.model.Peliculas;
 
 import java.util.ArrayList;
@@ -24,7 +26,8 @@ public class MainActivity extends AppCompatActivity {
 
     private RecyclerView recyclerView;
     private MovieAdaptador movieAdaptador;
-    private List<Peliculas.Result> resultList = new ArrayList<>(  );
+    private LinearLayoutManager linearLayoutManager;
+    private List<Peliculas.Result> movie;
     TextView txt_title;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -32,10 +35,14 @@ public class MainActivity extends AppCompatActivity {
         setContentView( R.layout.activity_main );
 
         recyclerView = findViewById( R.id.recycler );
-            recyclerView.setLayoutManager( new LinearLayoutManager( this ) );
-            movieAdaptador = new MovieAdaptador( resultList );
-            recyclerView.setHasFixedSize( true );
-            recyclerView.setAdapter( movieAdaptador );
+        linearLayoutManager = new LinearLayoutManager(this);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(linearLayoutManager);
+
+//            recyclerView.setLayoutManager( new LinearLayoutManager( this ) );
+//            movieAdaptador = new MovieAdaptador(resultList );
+//           recyclerView.setHasFixedSize( true );
+//            recyclerView.setAdapter( movieAdaptador );
 
 //txt_title = findViewById( R.id.txt_title );
 
@@ -52,22 +59,27 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onResponse(Call<Peliculas> call, Response<Peliculas> response) {
 
-                resultList =  response.body().getResults();
+                     if(!response.isSuccessful()){
+                         Toast.makeText(MainActivity.this, response.code(), Toast.LENGTH_SHORT).show();
+                     }
+
+                      movie = response.body().getResults();
+                      movieAdaptador = new MovieAdaptador(movie,MainActivity.this);
+                      recyclerView.setAdapter(movieAdaptador);
+
 
             }
 
             @Override
             public void onFailure(Call<Peliculas> call, Throwable t) {
-
+                Toast.makeText(MainActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
             }
         });
-        movieAdaptador.notifyDataSetChanged();
+      // movieAdaptador.notifyDataSetChanged();
 
 
 
     }
 
-    public void Cargar(){
 
-    }
 }
