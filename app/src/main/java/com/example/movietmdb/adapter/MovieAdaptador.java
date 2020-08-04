@@ -1,19 +1,22 @@
 package com.example.movietmdb.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.example.movietmdb.MoviesDetalle;
 import com.example.movietmdb.R;
-import com.example.movietmdb.model.ModelMovies;
 import com.example.movietmdb.model.Peliculas;
 
 import java.util.List;
@@ -24,14 +27,18 @@ public class MovieAdaptador extends RecyclerView.Adapter<MovieAdaptador.ViewHold
     public static class ViewHolder extends RecyclerView.ViewHolder {
         TextView txt_titulo, txt_descripcion;
         ImageView imageView;
-
+        ConstraintLayout container;
         Context mcontext;
 
         public ViewHolder(View itemView) {
             super(itemView);
+
+            container = itemView.findViewById( R.id.container );
             txt_titulo = itemView.findViewById(R.id.txt_titulo);
             txt_descripcion = itemView.findViewById(R.id.txt_descripcion);
             imageView = (ImageView) itemView.findViewById(R.id.imgpel);
+
+
 
         }
     }
@@ -56,6 +63,8 @@ public class MovieAdaptador extends RecyclerView.Adapter<MovieAdaptador.ViewHold
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
 
+        holder.imageView.setAnimation( AnimationUtils.loadAnimation( mContext,R.anim.fade_transition_animation ) );
+        holder.container.setAnimation( AnimationUtils.loadAnimation( mContext,R.anim.fade_scale_animation ) );
         Glide.with(mContext)
                 .load(peliculasList.get(position).getBackdropPath())
                 .into(holder.imageView);
@@ -66,23 +75,41 @@ public class MovieAdaptador extends RecyclerView.Adapter<MovieAdaptador.ViewHold
         ((ViewHolder)holder).imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "Has tocado la imagen" + position , Toast.LENGTH_SHORT).show();
+
+              int pos = position;
+              if(pos !=RecyclerView.NO_POSITION){
+                  Peliculas.Result pelisitem = peliculasList.get( pos );
+                  Intent intent = new Intent( mContext, MoviesDetalle.class );
+                  intent.putExtra( "original_title",peliculasList.get( pos ).getOriginalTitle() );
+                  intent.putExtra("poster_path",peliculasList.get( pos ).getPosterPath() );
+                  intent.putExtra( "overview",peliculasList.get( pos ).getOverview() );
+
+                  intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK  );
+                  mContext.startActivity(intent );
+                  Toast.makeText( mContext, "Has pasado el texto" +pelisitem.getOriginalTitle(), Toast.LENGTH_SHORT ).show();
+
+
+              }
+
+                ///Toast.makeText(mContext, "Has tocado la imagen" + position , Toast.LENGTH_SHORT).show();
             }
         });
 
         ((ViewHolder)holder).txt_descripcion.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "has tocado la descripcion", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(mContext, "has tocado la descripcion", Toast.LENGTH_SHORT).show();
             }
         });
 
         ((ViewHolder)holder).txt_titulo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Toast.makeText(mContext, "has tocado el titulo", Toast.LENGTH_SHORT).show();
+               // Toast.makeText(mContext, "has tocado el titulo", Toast.LENGTH_SHORT).show();
             }
         });
+
+
 
     }
 

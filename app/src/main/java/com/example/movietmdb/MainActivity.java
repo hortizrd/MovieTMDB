@@ -10,10 +10,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.movietmdb.adapter.MovieAdaptador;
 import com.example.movietmdb.api.Interface;
-import com.example.movietmdb.model.ModelMovies;
 import com.example.movietmdb.model.Peliculas;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import retrofit2.Call;
@@ -39,12 +37,7 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setHasFixedSize(true);
         recyclerView.setLayoutManager(linearLayoutManager);
 
-//            recyclerView.setLayoutManager( new LinearLayoutManager( this ) );
-//            movieAdaptador = new MovieAdaptador(resultList );
-//           recyclerView.setHasFixedSize( true );
-//            recyclerView.setAdapter( movieAdaptador );
 
-//txt_title = findViewById( R.id.txt_title );
 
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl( Constant.BASE_URL )
