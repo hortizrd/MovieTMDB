@@ -78,15 +78,15 @@ public class MovieAdaptador extends RecyclerView.Adapter<MovieAdaptador.ViewHold
 
               int pos = position;
               if(pos !=RecyclerView.NO_POSITION){
-                  Peliculas.Result pelisitem = peliculasList.get( pos );
+                  Peliculas.Result pelisitem = peliculasList.get(pos);
                   Intent intent = new Intent( mContext, MoviesDetalle.class );
-                  intent.putExtra( "original_title",peliculasList.get( pos ).getOriginalTitle() );
-                  intent.putExtra("poster_path",peliculasList.get( pos ).getPosterPath() );
+                  intent.putExtra( "title",peliculasList.get( pos ).getTitle() );
+                  intent.putExtra("poster_path",peliculasList.get( pos ).getBackdropPath() );
                   intent.putExtra( "overview",peliculasList.get( pos ).getOverview() );
 
                   intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK  );
                   mContext.startActivity(intent );
-                  Toast.makeText( mContext, "Has pasado el texto" +pelisitem.getOriginalTitle(), Toast.LENGTH_SHORT ).show();
+                 // Toast.makeText( mContext, "Has pasado el texto" +pelisitem.getOriginalTitle(), Toast.LENGTH_SHORT ).show();
 
 
               }
