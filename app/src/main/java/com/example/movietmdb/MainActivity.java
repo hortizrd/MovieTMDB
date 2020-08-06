@@ -1,6 +1,7 @@
 package com.example.movietmdb;
 
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,6 +28,7 @@ public class MainActivity extends AppCompatActivity {
     private LinearLayoutManager linearLayoutManager;
     private List<Peliculas.Result> movie;
     TextView txt_title;
+    private  int progress = 0;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate( savedInstanceState );
@@ -69,8 +71,8 @@ public class MainActivity extends AppCompatActivity {
             }
         });
       // movieAdaptador.notifyDataSetChanged();
-
-
+ String Bienvenidos = "ESto es l o que contiene esta variable";
+        Log.d("hola","mientras" + Bienvenidos);
 
     }
 

@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.AnimationUtils;
 import android.widget.ImageView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -25,10 +26,11 @@ public class MovieAdaptador extends RecyclerView.Adapter<MovieAdaptador.ViewHold
     private Context mContext;
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        TextView txt_titulo, txt_descripcion;
+         public TextView txt_titulo, txt_descripcion,textview_progress;
         ImageView imageView;
         ConstraintLayout container;
         Context mcontext;
+        ProgressBar progressBar;
 
         public ViewHolder(View itemView) {
             super(itemView);
@@ -37,7 +39,8 @@ public class MovieAdaptador extends RecyclerView.Adapter<MovieAdaptador.ViewHold
             txt_titulo = itemView.findViewById(R.id.txt_titulo);
             txt_descripcion = itemView.findViewById(R.id.txt_descripcion);
             imageView = (ImageView) itemView.findViewById(R.id.imgpel);
-
+            textview_progress=itemView.findViewById(R.id.textview_progress);
+            progressBar= itemView.findViewById(R.id.progress_circular);
 
 
         }
@@ -71,7 +74,12 @@ public class MovieAdaptador extends RecyclerView.Adapter<MovieAdaptador.ViewHold
 
         holder.txt_titulo.setText(peliculasList.get(position).getTitle());
         holder.txt_descripcion.setText(peliculasList.get(position).getOverview());
+        holder.textview_progress.setText(peliculasList.get(position).getVoteAverage().toString());
 
+
+         //int value = (int)data;
+
+        // holder.progressBar.setProgress((int) peliculasList.get(position).getVoteAverage());
         ((ViewHolder)holder).imageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -83,6 +91,7 @@ public class MovieAdaptador extends RecyclerView.Adapter<MovieAdaptador.ViewHold
                   intent.putExtra( "title",peliculasList.get( pos ).getTitle() );
                   intent.putExtra("poster_path",peliculasList.get( pos ).getBackdropPath() );
                   intent.putExtra( "overview",peliculasList.get( pos ).getOverview() );
+                  intent.putExtra( "average",peliculasList.get( pos ).getVoteAverage() );
 
                   intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK  );
                   mContext.startActivity(intent );
